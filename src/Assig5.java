@@ -28,12 +28,12 @@ public class Assig5
        {
            for (int k = 0; k < 14; k++)
            {
-               String fileName = "../images/" + turnIntIntoCardValue(k) +
+               String fileName = "images/" + turnIntIntoCardValue(k) +
                        turnIntIntoCardSuit(j) + ".gif";
                icon[indexTracker++] = new ImageIcon(fileName);
            }
        }
-       icon[indexTracker] = new ImageIcon("../images/BK.gif");
+       icon[indexTracker] = new ImageIcon("images/BK.gif");
     }
 
     // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
