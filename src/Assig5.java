@@ -17,6 +17,9 @@ public class Assig5
     /*
      * Build the file names. For each file name, read it in and use it to
      * instantiate each of the 57 Icons in the icon[] array.
+     * 
+     * Because our image folder is in a directory above our source folder, 
+     * the directory is ../images/, rather than images/
      */
     static void loadCardIcons()
     {
@@ -25,12 +28,12 @@ public class Assig5
        {
            for (int k = 0; k < 14; k++)
            {
-               String fileName = "images/" + turnIntIntoCardValue(k) +
+               String fileName = "../images/" + turnIntIntoCardValue(k) +
                        turnIntIntoCardSuit(j) + ".gif";
                icon[indexTracker++] = new ImageIcon(fileName);
            }
        }
-       icon[indexTracker] = new ImageIcon("images/BK.gif");
+       icon[indexTracker] = new ImageIcon("../images/BK.gif");
     }
 
     // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
