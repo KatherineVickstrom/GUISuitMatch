@@ -7,7 +7,7 @@
  */
 public class Hand
 {
-   public final int MAX_CARDS = 50;
+   public final int MAX_CARDS = 54;
    Card[] myCards;
    int numCards;
    public Hand()
@@ -48,13 +48,30 @@ public class Hand
     * Returns and removes the top card to be played.
     * Decrements numCards and returns a new card
     * object with copied values.
+    * Updated for lab 5 using the provided code
     *
     * @return The card to be played
     */
-   public Card playCard()
-   {
-      return (numCards > 0 ? new Card(myCards[--numCards].getValue(), myCards[numCards].getSuit()) : null);
-   }
+    public Card playCard(int cardIndex)
+    {
+       if ( numCards == 0 ) //error
+       {
+          //Creates a card that does not work
+          return new Card('M', Card.Suit.SPADES);
+       }
+       //Decreases numCards.
+       Card card = myCards[cardIndex];
+       
+       numCards--;
+       for(int i = cardIndex; i < numCards; i++)
+       {
+          myCards[i] = myCards[i+1];
+       }
+       
+       myCards[numCards] = null;
+       
+       return card;
+     }
    /**
     * Method to return the full hand as a string
     */
