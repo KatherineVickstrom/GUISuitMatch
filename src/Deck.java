@@ -10,12 +10,14 @@ import java.util.Random;
 
 public class Deck {
     // Members and constants
-    public static final int MAX_CARDS = 312;    // 312 = 6 * 52, so, six decks
-    public static final int MAX_PACKS = 6;
+    private static final int DECK_SIZE = 56;    // 52 cards + 4 jokers
     private static boolean allocated = false; 
-    private static Card[] masterPack = new Card[52]; // contains every card type
+    private static Card[] masterPack = new Card[DECK_SIZE]; // contains every card type
     private Card[] cards;
     private int topCard;
+    public static final int MAX_PACKS = 6;
+    public static final int MAX_CARDS = DECK_SIZE * MAX_PACKS;    
+
 
     // Public Methods
     /**
@@ -42,7 +44,7 @@ public class Deck {
     public void init(int numPacks) {
         if (numPacks < 1) numPacks = 1;
         else if (numPacks > MAX_PACKS) numPacks = MAX_PACKS;
-        cards = new Card[(numPacks * 52)];
+        cards = new Card[(numPacks * DECK_SIZE)];
         topCard = 0;
         // an 'iterator' that should not be > 52 for masterPack reference
         int j = 0;      
@@ -50,7 +52,7 @@ public class Deck {
             cards[i] = 
                 new Card(masterPack[j].getValue(), masterPack[j].getSuit());
             j++;
-            if (i % 51 == 0 && i != 0) {    // Start at masterPack[0] again
+            if (i % (DECK_SIZE - 1) == 0 && i != 0) {    // Start at masterPack[0] again
                 j = 0;                      // array range is 0 < j < 51
             }
         }
@@ -117,6 +119,69 @@ public class Deck {
             return new Card('e', cards[k].getSuit()); 
         } 
 
+    }
+
+    /**
+     * make sure that there are not too many instances of the card in the deck 
+     * if you add it.  Return false if there will be too many.  It should put 
+     * the card on the top of the deck.
+     * @param card
+     * @return bool
+     */
+    public boolean addCard(Card card) {
+        for (int i = 0; i < cards.length; ++i) {
+            if (card.equals(cards[i]))
+                return false;
+        }
+        if (topCard > 0) {
+            cards[topCard - 1] = new Card(card.getValue(),card.getSuit());
+            return true;
+        }
+        else {
+            return false; // This means the deck is full 
+        }
+
+    }
+
+    /**
+     * remove a specific card from the deck.  Put the current top card into its 
+     * place.  Be sure the card you need is actually still in the deck, if not 
+     * return false.
+     * @param card
+     * @return bool
+     */
+    public boolean removeCard(Card card) {
+        for (int i = 0; i < cards.length; ++i) {
+            if (card.equals(cards[i])) {
+                cards[i] = new Card(cards[topCard].getValue(), 
+                    cards[topCard].getSuit());
+                cards[topCard] = null; 
+                topCard++; 
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * put all of the cards in the deck back into the right order according to 
+     * their values.
+     */
+    public void sort() {
+        Card.arraySort(cards, cards.length);
+    }
+
+    /**
+     * return the number of cards remaining in the deck
+     * @return numCards
+     */
+    public int getNumCards() {
+        int numCards = 0;
+        for (int i = 0; i < cards.length; ++i) {
+            if (cards[i] != null) 
+                numCards++;
+        }
+        return numCards;
     }
 
     /**

@@ -11,9 +11,12 @@ public class Card
    private char value;
    private Suit suit;
    private boolean errorFlag;
+   public static char[] valuRanks = 
+      { 'X', 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T','J', 'Q', 'K'};
+   
    public enum Suit
    {
-      CLUBS, DIAMONDS, HEARTS, SPADES
+      CLUBS, DIAMONDS, HEARTS, SPADES, JOKER
    }
    //Constructors
    public Card(char value, Suit suit)
@@ -82,6 +85,50 @@ public class Card
    {
       return (value == card.value && suit == card.suit && errorFlag == card.errorFlag);
    }
+
+   /**
+    * sort the incoming array of cards using a bubble sort routine.
+    *
+    * Bubble sort algorithm: <code>
+    * bubbleSort(array)
+    *  for i <- 1 to indexOfLastUnsortedElement-1
+    *     if leftElement > rightElement
+    *        swap leftElement and rightElement
+    * end bubbleSort </code>
+    * https://www.programiz.com/dsa/bubble-sort
+    * @param cardArray
+    * @param arraySize
+    */
+   public static void arraySort(Card[] cardArray, int arraySize) {
+      for (int i = 0; i < arraySize; ++i) {
+         for (int j = 0; j < arraySize; ++j) {
+            if (cardArray[j].createRanking() > 
+               cardArray[j + 1].createRanking()) {
+               Card temp = new Card(cardArray[j].getValue(),
+                  cardArray[j].getSuit());
+               cardArray[j] = new Card(cardArray[j + 1].getValue(),
+                  cardArray[j + 1].getSuit());
+               cardArray[j + 1] = new Card(temp.getValue(), temp.getSuit());
+            }
+            else if(cardArray[j] == null) {
+               return;
+            }
+         }
+      }
+   }
+
+   /**
+    * Helper method for arraySort to give each card a numeric value for sorting
+    */
+   private int createRanking() {
+      for (int i = 0; i < valuRanks.length; ++i) {
+         if(value == valuRanks[i])
+            return i;
+      }
+      return 0;
+   }
+
+   
    //Private methods
    /**
     * Validates that the received data can be
