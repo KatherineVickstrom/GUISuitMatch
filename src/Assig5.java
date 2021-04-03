@@ -10,28 +10,48 @@ public class Assig5
     // normally we would not have a separate label for each card, but
     // if we want to display all at once using labels, we need to.
 
-    static final int NUM_CARD_IMAGES = 57; // 52 + 4 jokers + 1 back-of-card image
+    // 52 + 4 jokers + 1 back-of-card image
+    static final int NUM_CARD_IMAGES = 57; 
     static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
 
+    /*
+     * Build the file names. For each file name, read it in and use it to
+     * instantiate each of the 57 Icons in the icon[] array.
+     */
     static void loadCardIcons()
     {
-        // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
-        // in a SHORT loop.  For each file name, read it in and use it to
-        // instantiate each of the 57 Icons in the icon[] array.
+       int indexTracker = 0;
+       for (int j = 0; j < 4; j++)
+       {
+           for (int k = 0; k < 14; k++)
+           {
+               String fileName = "images/" + turnIntIntoCardValue(k) +
+                       turnIntIntoCardSuit(j) + ".gif";
+               icon[indexTracker++] = new ImageIcon(fileName);
+           }
+       }
+       icon[indexTracker] = new ImageIcon("images/BK.gif");
     }
 
     // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
     static String turnIntIntoCardValue(int k)
     {
-        // an idea for a helper method (do it differently if you wish)
-        return "";
+       String[] cardValue = { "A", "2", "3", "4", "5", "6", "7", "8", "9", 
+             "T", "J", "Q", "K", "X" };
+       if (k > -1 && k < 14)
+          return cardValue[k];
+       else
+          return "";
     }
 
     // turns 0 - 3 into "C", "D", "H", "S"
     static String turnIntIntoCardSuit(int j)
     {
-        // an idea for another helper method (do it differently if you wish)
-        return "";
+       String[] cardSuit = { "C", "D", "H", "S" };
+       if (j > -1 && j < 4)
+          return cardSuit[j];
+       else
+          return "";
     }
 
     // a simple main to throw all the JLabels out there for the world to see
