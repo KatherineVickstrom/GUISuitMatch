@@ -92,7 +92,7 @@ public class Hand
       }
       return str;
    }
-   public void sort() { } //TODO sort method
+
    //Accessors
    public int getNumCards()
    {
