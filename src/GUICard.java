@@ -1,6 +1,5 @@
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import java.io.File;
 
 public class GUICard {
     private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
@@ -8,14 +7,14 @@ public class GUICard {
     static boolean iconsLoaded = false;
     static void loadCardIcons() {
         if (iconsLoaded) return;
-        File dir = new File("images\\");
-        for (File file : dir.listFiles()) {
-            String fileName = file.getName();
-            int row = getRowFromChar(fileName.charAt(0));
-            int col = getColFromChar(fileName.charAt(1));
-            if (row == -1) iconBack = new ImageIcon(file.getAbsolutePath());
-            else if (col != -1) iconCards[row][col] = new ImageIcon(file.getAbsolutePath());
+        for (int j = 0; j < 4; j++) {
+            for (int k = 0; k < 14; k++) {
+                String fileName = "images/" + Assig5.turnIntIntoCardValue(k) +
+                        Assig5.turnIntIntoCardSuit(j) + ".gif";
+                iconCards[k][j] = new ImageIcon(fileName);
+            }
         }
+        iconBack = new ImageIcon("images/BK.gif");
         iconsLoaded = true;
     }
     public static Icon getIcon(Card card) {
@@ -59,20 +58,6 @@ public class GUICard {
                 int charToInt = character - '0';
                 if (charToInt < 2 || charToInt > 9) return -1;
                 return --charToInt;
-        }
-    }
-    public static int getColFromChar(char character) {
-        switch (character) {
-            case 'C':
-                return 0;
-            case 'D':
-                return 1;
-            case 'H':
-                return 2;
-            case 'S':
-                return 3;
-            default:
-                return -1;
         }
     }
 }
