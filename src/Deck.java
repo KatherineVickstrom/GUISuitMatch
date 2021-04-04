@@ -204,6 +204,12 @@ public class Deck {
                     k++;
                 }
             }
+            // compensate for null references in the last 4 slots
+            for (int i = 0; i < 4; ++i) {
+                masterPack[k] = new Card();
+                k++;
+            }
+
             allocated = true;
         }
     }
