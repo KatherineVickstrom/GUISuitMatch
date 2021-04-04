@@ -16,7 +16,7 @@ public class Card
    
    public enum Suit
    {
-      CLUBS, DIAMONDS, HEARTS, SPADES, JOKER
+      CLUBS, DIAMONDS, HEARTS, SPADES
    }
    //Constructors
    public Card(char value, Suit suit)
@@ -142,7 +142,7 @@ public class Card
    private boolean isValid(char value, Suit suit)
    {
       boolean isValid = false;
-      char[] validChars = { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
+      char[] validChars = { 'X', 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
       for (int i = 0; i < validChars.length; i++)
       {
          if (value == validChars[i]) isValid = true;

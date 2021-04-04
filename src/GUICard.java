@@ -21,7 +21,8 @@ public class GUICard {
         if (card.errorFlag()) return null;
         int row = getRowFromChar(card.getValue());
         int col = suitAsInt(card.getSuit());
-        return iconCards[row][col];
+        if (iconCards[row][col] == null) return iconBack;
+        else return iconCards[row][col];
     }
     public static Icon getBackCardIcon() {
         return iconBack;
