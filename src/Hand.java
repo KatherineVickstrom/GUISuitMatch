@@ -118,7 +118,7 @@ public class Hand
       }
    }
 
-   public void sortHand() {
+   public void sort() {
       Card.arraySort(myCards, numCards);
    }
 }
