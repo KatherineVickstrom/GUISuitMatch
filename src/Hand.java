@@ -116,4 +116,8 @@ public class Hand
          return new Card(myCards[k].getValue(), myCards[k].getSuit());
       }
    }
+
+   public void sortHand() {
+      Card.arraySort(myCards, numCards);
+   }
 }
