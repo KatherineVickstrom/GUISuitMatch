@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.Flow;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CardTable extends JFrame {
     static int MAX_CARDS_PER_HAND = 56;
@@ -12,29 +13,60 @@ public class CardTable extends JFrame {
     public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
     //Filters input, adds panels to JFrame, establishes layouts
     public CardTable(String title, int numCardsPerHand, int numPlayers) {
-        //Validation
         super(title);
-
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-
+        //Validation
         if (numCardsPerHand < 1) numCardsPerHand = 1;
         else if (numCardsPerHand > MAX_CARDS_PER_HAND) numCardsPerHand = MAX_CARDS_PER_HAND;
         if (numPlayers < 1) numPlayers = 1;
         else if (numPlayers > MAX_PLAYERS) numPlayers = MAX_PLAYERS;
-        //Initialization
 
+        //Initialization
         this.numCardsPerHand = numCardsPerHand;
         this.numPlayers = numPlayers;
         pnlComputerHand = new JPanel();
         pnlHumanHand = new JPanel();
         pnlPlayArea = new JPanel();
-        pnlComputerHand.setLayout(new BoxLayout(pnlComputerHand, BoxLayout.LINE_AXIS));
+
+        //Layouts
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         pnlComputerHand.setLayout(new GridLayout());
         pnlPlayArea.setLayout(new GridLayout(2, 2));
         pnlHumanHand.setLayout(new GridLayout());
+
+        //Borders
         pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
         pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
         pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+
+        //Listener
+        pnlPlayArea.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("lol");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        //Add panels to jframe
         add(pnlComputerHand);
         add(pnlPlayArea);
         add(pnlHumanHand);
@@ -42,4 +74,5 @@ public class CardTable extends JFrame {
     //Accessors
     public int getNumCardsPerHand() { return numCardsPerHand; }
     public int getNumPlayers() { return numPlayers; }
+
 }
