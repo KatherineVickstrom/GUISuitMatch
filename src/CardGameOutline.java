@@ -1,6 +1,5 @@
 class CardGameOutline
 {
-    /*
     private static final int MAX_PLAYERS = 50;
 
     private int numPlayers;
@@ -143,15 +142,13 @@ class CardGameOutline
                 cardIndex < 0 || cardIndex > numCardsPerHand - 1)
         {
             //Creates a card that does not work
-            return new Card('M', Card.Suit.spades);
+            return new Card('M', Card.Suit.SPADES);
         }
 
         // return the card played
         return hand[playerIndex].playCard(cardIndex);
 
     }
-
-
     boolean takeCard(int playerIndex)
     {
         // returns false if either argument is bad
@@ -164,5 +161,4 @@ class CardGameOutline
 
         return hand[playerIndex].takeCard(deck.dealCard());
     }
-*/
 }

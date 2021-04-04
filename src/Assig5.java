@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.concurrent.Flow;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -94,11 +95,11 @@ public class Assig5
            = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
         myCardTable.setSize(800, 600);
         myCardTable.setLocationRelativeTo(null);
-        myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
+        myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // CREATE LABELS ---------------------------------------------------
+        GUICard.loadCardIcons();
         for (int i = 0; i < NUM_CARDS_PER_HAND; ++i) {
             humanLabels[i] = new JLabel(GUICard.getIcon(randomCardGenerator()));
-
         }
         for (int i = 0; i < NUM_CARDS_PER_HAND; ++i) {
             computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
@@ -106,7 +107,6 @@ public class Assig5
         // ADD LABELS TO PANELS ----------------------------------------        
         for (int i = 0; i < NUM_CARDS_PER_HAND; ++i) {
             myCardTable.pnlHumanHand.add(humanLabels[i]);
-
         }
         for (int i = 0; i < NUM_CARDS_PER_HAND; ++i) {
             myCardTable.pnlComputerHand.add(computerLabels[i]);
@@ -117,8 +117,9 @@ public class Assig5
             new JLabel(GUICard.getIcon(randomCardGenerator())));
         myCardTable.pnlPlayArea.add(
             new JLabel(GUICard.getIcon(randomCardGenerator())));
-        myCardTable.pnlPlayArea.add(new JLabel("Computer"));
-        myCardTable.pnlPlayArea.add(new JLabel("You"));
+        myCardTable.pnlPlayArea.add(new JLabel("Computer", JLabel.CENTER));
+        myCardTable.pnlPlayArea.add(new JLabel("You", JLabel.CENTER));
+
         // show everything to the user
         myCardTable.setVisible(true);
     }
