@@ -34,7 +34,7 @@ public class Hand
     */
    public boolean takeCard(Card card)
    {
-      if(card.errorFlag() == true || card == null || numCards == MAX_CARDS)
+      if(card == null || card.errorFlag() == true || numCards == MAX_CARDS)
       {
          return false;
       }

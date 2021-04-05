@@ -1,10 +1,17 @@
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
+/**
+ * Represents a card object graphically
+ */
 public class GUICard {
     private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
     private static Icon iconBack;
     static boolean iconsLoaded = false;
+
+    /**
+     * Loads card icons into a 2D array. The card back icon
+     * is stored separately.
+     */
     static void loadCardIcons() {
         if (iconsLoaded) return;
         for (int j = 0; j < 4; j++) {
@@ -17,6 +24,12 @@ public class GUICard {
         iconBack = new ImageIcon("images/BK.gif");
         iconsLoaded = true;
     }
+
+    /**
+     * Returns a card's icon.
+     *
+     * @return null on error
+     */
     public static Icon getIcon(Card card) {
         if (card.errorFlag()) return null;
         int row = getRowFromChar(card.getValue());
@@ -24,9 +37,17 @@ public class GUICard {
         if (iconCards[row][col] == null) return iconBack;
         else return iconCards[row][col];
     }
+
+    /**
+     * Returns the card back icon.
+     */
     public static Icon getBackCardIcon() {
         return iconBack;
     }
+
+    /**
+     * Returns a card suit as an integer.
+     */
     public static int suitAsInt(Card.Suit suit) {
         switch (suit) {
             case CLUBS:
@@ -41,6 +62,11 @@ public class GUICard {
                 return -1;
         }
     }
+
+    /**
+     * Returns the correct row for a card.
+     * @param character The card's value
+     */
     public static int getRowFromChar(char character) {
         switch (character) {
             case 'A':
