@@ -12,12 +12,11 @@ public class Deck {
     // Members and constants
     private static final int DECK_SIZE = 56;    // 52 cards + 4 jokers
     private static boolean allocated = false; 
-    private static Card[] masterPack = new Card[DECK_SIZE]; // contains every card type
+    private static Card[] masterPack = new Card[DECK_SIZE-4]; //does not include jokers
     private Card[] cards;
     private int topCard;
     public static final int MAX_PACKS = 6;
-    public static final int MAX_CARDS = DECK_SIZE * MAX_PACKS;    
-
+    public static final int MAX_CARDS = DECK_SIZE * MAX_PACKS;
 
     // Public Methods
     /**
@@ -47,12 +46,12 @@ public class Deck {
         cards = new Card[(numPacks * DECK_SIZE)];
         topCard = 0;
         // an 'iterator' that should not be > 52 for masterPack reference
-        int j = 0;      
-        for (int i = 0; i < cards.length; ++i) {
+        int j = 0;
+        for (int i = 0; i < cards.length-(4*numPacks); ++i) {
             cards[i] = 
                 new Card(masterPack[j].getValue(), masterPack[j].getSuit());
             j++;
-            if (i % (DECK_SIZE - 1) == 0 && i != 0) {    // Start at masterPack[0] again
+            if (i % (DECK_SIZE - 5) == 0 && i != 0) {    // Start at masterPack[0] again
                 j = 0;                      // array range is 0 < j < 51
             }
         }
@@ -61,21 +60,30 @@ public class Deck {
     /**
      * Mixes up the cards with the help of the standard random number generator
      */
-    public void shuffle() { 
+    public void shuffle() {
+        //Locate the last non-null index
+        int lastIndex = cards.length;
+        for (int i = cards.length-1; i >= 0;--i) {
+            if (cards[i] != null) {
+                lastIndex = i;
+                break;
+            }
+        }
+        // Populate a temp array with the cards (deep copy)
+        Card[] temp = new Card[lastIndex+1];
+        for (int i = 0; i < temp.length; ++i)
+            temp[i] = new Card(cards[i].getValue(), cards[i].getSuit());
+        //Randomly swap values in the temp array
         Random r = new Random();
-        // Populate a temp array with the cards
-        Card[] temp = new Card[cards.length];
-        for (int i = 0; i < cards.length; ++i) {
-           temp[i] = cards[i];
-           cards[i] = null;
+        for (int i = 0; i < temp.length; ++i) {
+            int j = r.nextInt(temp.length);  // Create a new random number
+            Card tempCard = new Card(temp[j].getValue(), temp[j].getSuit());
+            temp[j] = new Card(temp[i].getValue(), temp[i].getSuit());
+            temp[i] = tempCard;
         }
-        for (int i = 0; i < cards.length; ++i) {
-            int j = r.nextInt(cards.length);  // Create a new random number 
-            if (cards[j] == null)
-                cards[j] = temp[i];
-            else 
-                --i;    // Decrement the iterator to try again 
-        }
+        //Copy the temp array back to the main array
+        for (int i = 0; i < temp.length; ++i)
+            cards[i] = temp[i];
     }
 
     /**
@@ -85,7 +93,6 @@ public class Deck {
      * change its data after it is sent out.
      * @return A card or null if none available
      */
-
     public Card dealCard() {
         if (topCard == cards.length) return null;
         else if (cards[topCard] != null) {
@@ -93,13 +100,10 @@ public class Deck {
                 new Card(cards[topCard].getValue(), cards[topCard].getSuit());
             cards[topCard] = null;  // Remove the top card 
             topCard++;              // Increment the top card "pointer"
-            return dealtCard;       // Deal the card 
+            return dealtCard;       // Deal the card
         }
-        else {
-            return null;
-        }
+        else return null;
     }
-
 
     public int getTopCard() {
         return topCard;
@@ -129,18 +133,25 @@ public class Deck {
      * @return bool
      */
     public boolean addCard(Card card) {
+        if (card == null || topCard == cards.length) return false;
         for (int i = 0; i < cards.length; ++i) {
-            if (card.equals(cards[i]))
+            if (cards[i] != null && card.equals(cards[i]))
                 return false;
         }
-        if (topCard > 0) {
-            cards[topCard - 1] = new Card(card.getValue(),card.getSuit());
+        if (cards[topCard] == null) {
+            cards[topCard] = new Card(card.getValue(), card.getSuit());
             return true;
         }
-        else {
-            return false; // This means the deck is full 
+        //Places top card on the bottom of the deck and new card on top
+        for (int i = topCard; i < cards.length; ++i) {
+            if (cards[i] == null) {
+                //swap
+                cards[i] = new Card(cards[topCard].getValue(), cards[topCard].getSuit());;
+                cards[topCard] = new Card(card.getValue(), card.getSuit());
+                return true;
+            }
         }
-
+        return false; // This means the deck is full
     }
 
     /**
@@ -156,7 +167,7 @@ public class Deck {
                 cards[i] = new Card(cards[topCard].getValue(), 
                     cards[topCard].getSuit());
                 cards[topCard] = null; 
-                topCard++; 
+                topCard++;
                 return true;
             }
         }
@@ -204,12 +215,6 @@ public class Deck {
                     k++;
                 }
             }
-            // compensate for null references in the last 4 slots
-            for (int i = 0; i < 4; ++i) {
-                masterPack[k] = new Card();
-                k++;
-            }
-
             allocated = true;
         }
     }
